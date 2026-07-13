@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BamboeUp.Report.Engines</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BamboeUp.Report.csproj" />
+    <ProjectReference Include="..\BamboeUp.Report.QuestPdf\BamboeUp.Report.QuestPdf.csproj" />
+    <ProjectReference Include="..\BamboeUp.Report.FastReport\BamboeUp.Report.FastReport.csproj" />
+    <ProjectReference Include="..\BamboeUp.Report.Telerik\BamboeUp.Report.Telerik.csproj" />
+    <ProjectReference Include="..\BamboeUp.Report.DevExpress\BamboeUp.Report.DevExpress.csproj" />
+  </ItemGroup>
+
+</Project>

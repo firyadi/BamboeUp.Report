@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copy this file to ReportEngines.Local.props (repo root: BamboeUp.Report/)
+  Directory.Build.props imports it automatically for all projects in this repo.
+-->
+<Project>
+  <PropertyGroup>
+    <!-- FastReport.OpenSource is always restored from nuget.org -->
+    <EnableFastReport>true</EnableFastReport>
+
+    <!-- Telerik: local installer (recommended if you have Telerik Reporting installed) -->
+    <EnableTelerikReport>true</EnableTelerikReport>
+    <TelerikReportingPath>C:\Program Files (x86)\Progress\Telerik Reporting 2024 Q4\Bin</TelerikReportingPath>
+    <UseTelerikLocalInstall>true</UseTelerikLocalInstall>
+
+    <!-- Alternative: NuGet feed (set UseTelerikLocalInstall=false and add Telerik feed in VS) -->
+    <!-- <UseTelerikLocalInstall>false</UseTelerikLocalInstall> -->
+
+    <!-- DevExpress: set true after DevExpress feed is configured -->
+    <EnableDevExpressReport>false</EnableDevExpressReport>
+
+    <!-- Optional override for template root at build/publish time -->
+    <!-- <ReportTemplateRoot>d:\Project\BamboeUp\BamboeUp.Report</ReportTemplateRoot> -->
+  </PropertyGroup>
+</Project>

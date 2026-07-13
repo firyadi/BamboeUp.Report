@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BamboeUp.Report.DevExpress</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(EnableDevExpressReport)' == 'true'">
+    <DefineConstants>$(DefineConstants);ENABLE_DEVEXPRESS_REPORT</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(EnableDevExpressReport)' == 'true'">
+    <PackageReference Include="DevExpress.Reporting.Core" Version="21.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BamboeUp.Report.csproj" />
+  </ItemGroup>
+
+</Project>

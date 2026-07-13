@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>BamboeUp.Report.Telerik</RootNamespace>
+  </PropertyGroup>
+
+  <!-- Enable via ReportEngines.Local.props → EnableTelerikReport=true -->
+  <PropertyGroup Condition="'$(EnableTelerikReport)' == 'true'">
+    <DefineConstants>$(DefineConstants);ENABLE_TELERIK_REPORT</DefineConstants>
+    <_TelerikDefaultBin>C:\Program Files (x86)\Progress\Telerik Reporting 2024 Q4\Bin</_TelerikDefaultBin>
+    <TelerikReportingPath Condition="'$(TelerikReportingPath)' == '' and Exists('$(_TelerikDefaultBin)\Telerik.Reporting.dll')">$(_TelerikDefaultBin)</TelerikReportingPath>
+    
+    <!-- If TelerikReportingPath points to the parent Bin folder, prefer netstandard2.0 subdirectory for .NET Core/5+ compatibility -->
+    <TelerikResolvedPath Condition="Exists('$(TelerikReportingPath)\netstandard2.0\Telerik.Reporting.dll')">$(TelerikReportingPath)\netstandard2.0</TelerikResolvedPath>
+    <TelerikResolvedPath Condition="'$(TelerikResolvedPath)' == ''">$(TelerikReportingPath)</TelerikResolvedPath>
+    
+    <UseTelerikLocalInstall Condition="'$(UseTelerikLocalInstall)' == '' and '$(TelerikReportingPath)' != ''">true</UseTelerikLocalInstall>
+  </PropertyGroup>
+
+  <!-- Option A: local installer DLLs (no NuGet feed required) -->
+  <ItemGroup Condition="'$(EnableTelerikReport)' == 'true' and '$(UseTelerikLocalInstall)' == 'true'">
+    <Reference Include="Telerik.Reporting">
+      <HintPath>$(TelerikResolvedPath)\Telerik.Reporting.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <None Include="$(TelerikResolvedPath)\Telerik.*.dll" Exclude="$(TelerikResolvedPath)\Telerik.Reporting.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.0" />
+    <PackageReference Include="System.Drawing.Common" Version="10.0.0" />
+    <PackageReference Include="System.Security.Permissions" Version="10.0.0" />
+  </ItemGroup>
+
+  <!-- Option B: NuGet package (requires Telerik feed) -->
+  <ItemGroup Condition="'$(EnableTelerikReport)' == 'true' and '$(UseTelerikLocalInstall)' != 'true'">
+    <PackageReference Include="Telerik.Reporting" Version="18.3.24.1112" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\BamboeUp.Report.csproj" />
+  </ItemGroup>
+
+</Project>

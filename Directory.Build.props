@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Imports local engine toggles for all projects in this repo.
+  Copy ReportEngines.Local.props.example → ReportEngines.Local.props and set EnableTelerikReport=true.
+-->
+<Project>
+  <Import Project="ReportEngines.Local.props" Condition="Exists('ReportEngines.Local.props')" />
+  <!-- Monorepo layout: parent folder may hold machine-specific engine toggles -->
+  <Import Project="..\ReportEngines.Local.props" Condition="Exists('..\ReportEngines.Local.props')" />
+</Project>
