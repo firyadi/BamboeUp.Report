@@ -19,7 +19,7 @@ public sealed class DevExpressReportRenderer : IReportRenderer
             Message =
                 "DevExpress Reporting engine is not enabled. " +
                 "Copy ReportEngines.Local.props.example to ReportEngines.Local.props, " +
-                "set EnableDevExpressReport=true, and restore DevExpressNETComponentsSetup-21.1.5 packages."
+                "set EnableDevExpressReport=true, and restore DevExpress 25.2 packages."
         });
 #endif
     }
@@ -42,7 +42,7 @@ public sealed class DevExpressReportRenderer : IReportRenderer
 
         try
         {
-            using var report = DevExpress.XtraReports.UI.XtraReport.FromFile(request.ResolvedTemplatePath, true);
+            using var report = global::DevExpress.XtraReports.UI.XtraReport.FromFile(request.ResolvedTemplatePath, true);
             if (request.Data.Tables.Count > 0)
             {
                 report.DataSource = request.Data.Tables[0];

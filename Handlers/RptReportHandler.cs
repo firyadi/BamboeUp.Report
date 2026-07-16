@@ -50,7 +50,12 @@ public sealed class RptReportHandler : IReportHandler
             if (dataTable.Rows.Count == 0)
                 return Fail("No data returned for this report.");
 
-            var dataSet = ReportDataSetHelper.ToReportDataSet(dataTable);
+            var dataSourceName = ReportDataSetHelper.ResolveDataSourceName(context.DefinitionKey);
+            var dataSet = ReportDataSetHelper.ToReportDataSet(dataTable, dataSourceName);
+
+            var headerTable = ReportHeaderDataBuilder.TryCreate(context);
+            if (headerTable != null)
+                dataSet.Tables.Add(headerTable);
 
             var renderer = _rendererRegistry.Resolve(rendererType);
             var renderResult = await renderer.RenderAsync(new ReportRenderRequest

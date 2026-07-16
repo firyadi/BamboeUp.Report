@@ -51,14 +51,29 @@ public static class ReportEngineBootstrap
         return registry;
     }
 
-    public static ReportTemplateOptions CreateDefaultOptions()
+    public static ReportTemplateOptions CreateDefaultOptions(string? configuredTemplateRoot = null)
     {
+        if (!string.IsNullOrWhiteSpace(configuredTemplateRoot))
+        {
+            var configured = Path.GetFullPath(configuredTemplateRoot.Trim());
+            if (Directory.Exists(configured))
+                return new ReportTemplateOptions { TemplateRoot = configured };
+        }
+
         var candidates = new[]
         {
-            Path.Combine(AppContext.BaseDirectory, "Reports"),
+            Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "..", "BamboeUp.Report")),
             Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "..", "BamboeUp.Report")),
-            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "BamboeUp.Report"))
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "BamboeUp.Report")),
+            Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "BamboeUp.Report")),
+            Path.Combine(AppContext.BaseDirectory, "Reports"),
         };
+
+        foreach (var path in candidates.Distinct(StringComparer.OrdinalIgnoreCase))
+        {
+            if (Directory.Exists(path) && HasTemplateContent(path))
+                return new ReportTemplateOptions { TemplateRoot = path };
+        }
 
         foreach (var path in candidates)
         {
@@ -67,5 +82,33 @@ public static class ReportEngineBootstrap
         }
 
         return new ReportTemplateOptions();
+    }
+
+    private static bool HasTemplateContent(string root)
+    {
+        foreach (var sub in new[] { "Rpt", "Doc", "Pvt" })
+        {
+            var dir = Path.Combine(root, sub);
+            if (!Directory.Exists(dir))
+                continue;
+
+            if (Directory.EnumerateFiles(dir, "*.*", SearchOption.AllDirectories)
+                .Any(IsTemplateFile))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsTemplateFile(string path)
+    {
+        var ext = Path.GetExtension(path);
+        return ext.Equals(".frx", StringComparison.OrdinalIgnoreCase)
+               || ext.Equals(".fr3", StringComparison.OrdinalIgnoreCase)
+               || ext.Equals(".trdx", StringComparison.OrdinalIgnoreCase)
+               || ext.Equals(".trdp", StringComparison.OrdinalIgnoreCase)
+               || ext.Equals(".repx", StringComparison.OrdinalIgnoreCase);
     }
 }

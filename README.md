@@ -34,7 +34,7 @@ BamboeUp.Report/
 | `engines/BamboeUp.Report.QuestPdf` | QuestPDF | C# fluent (`DocPdfRenderer`) | nuget.org (Community) |
 | `engines/BamboeUp.Report.FastReport` | FastReport Open Source | `.frx` | nuget.org |
 | `engines/BamboeUp.Report.Telerik` | Telerik Reporting 2024 Q4 | `.trdp` / `.trdx` | Local installer DLLs or Telerik NuGet feed |
-| `engines/BamboeUp.Report.DevExpress` | DevExpress 21.1 | `.repx` | DevExpress feed (license) |
+| `engines/BamboeUp.Report.DevExpress` | DevExpress 25.2 | `.repx` | DevExpress feed/local components (license) |
 | `engines/BamboeUp.Report.Engines` | DI bootstrap | — | references all engines |
 
 ## Runtime flow
@@ -63,7 +63,7 @@ If Telerik Reporting is installed (e.g. `C:\Program Files (x86)\Progress\Telerik
 3. Set `UseTelerikLocalInstall=false` for Telerik NuGet mode
 4. Add vendor NuGet sources in Visual Studio:
    - **Telerik:** `Telerik_Reporting_2024_Q4_18_3_24_1112_DEV`
-   - **DevExpress:** `DevExpressNETComponentsSetup-21.1.5.21260`
+   - **DevExpress:** `DevExpress 25.2 Local` or feed
 5. `dotnet restore` and rebuild
 
 Without licensed packages or local install, Telerik/DevExpress renderers return a clear configuration error at runtime.

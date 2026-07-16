@@ -38,6 +38,7 @@ public sealed class FastReportRenderer : IReportRenderer
             using var report = new FrReport();
             report.Load(request.ResolvedTemplatePath);
             RegisterData(report, request.Data, request.Context.Parameters);
+            ReportSystemPrintIdInjector.Apply(report, request.Context);
             report.Prepare();
 
             using var export = new PDFSimpleExport();
@@ -66,7 +67,12 @@ public sealed class FastReportRenderer : IReportRenderer
     private static void RegisterData(FrReport report, DataSet data, IReadOnlyDictionary<string, object?> parameters)
     {
         foreach (DataTable table in data.Tables)
+        {
             report.RegisterData(table, table.TableName);
+            var dataSource = report.GetDataSource(table.TableName);
+            if (dataSource != null)
+                dataSource.Enabled = true;
+        }
 
         foreach (var (key, value) in parameters)
             report.SetParameterValue(key, value ?? DBNull.Value);
